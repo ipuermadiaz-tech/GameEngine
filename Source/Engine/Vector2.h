@@ -1,5 +1,5 @@
 #pragma once
-
+#include <cmath>
 namespace nu
 {
 	struct Vector2
@@ -14,9 +14,85 @@ namespace nu
 			return Vector2{ this->x + v.x,this->y + v.y };
 		}
 
-		Vector2 operator + (Vector2 v)
+		Vector2 operator + (const Vector2& v) const
 		{ 
 			return  Vector2{ this->x + v.x,this->y + v.y };
 		}
+		Vector2 operator - (const Vector2& v) const
+		{
+			return  Vector2{ this->x - v.x,this->y - v.y };
+		}
+		Vector2 operator * (const Vector2& v) const
+		{
+			return  Vector2{ this->x * v.x,this->y * v.y };
+		}
+		Vector2 operator / (const Vector2& v) const
+		{
+			return  Vector2{ this->x / v.x,this->y / v.y };
+		}
+
+		
+		
+
+		///////
+		Vector2 operator + (float v) const{	return  Vector2{ this->x + v,this->y + v };}
+		Vector2 operator - (float v) const
+		{
+			return  Vector2{ this->x - v,this->y - v };
+		}
+		Vector2 operator * (float v) const
+		{
+			return  Vector2{ this->x * v,this->y * v };
+		}
+		Vector2 operator / (float v) const
+		{
+			return  Vector2{ this->x / v,this->y / v };
+		}
+
+		Vector2 operator += (const Vector2& v)
+		{
+			Vector2{ this->x += v.x,this->y += v.y };
+			return *this;
+		}
+		Vector2 operator -= (const Vector2& v)
+		{
+			Vector2{ this->x -= v.x,this->y -= v.y };
+			return *this;
+		}
+		Vector2 operator *= (const Vector2& v)
+		{
+			Vector2{ this->x *= v.x,this->y *= v.y };
+			return *this;
+		}
+		Vector2 operator /= (const Vector2& v)
+		{
+			Vector2{ this->x /= v.x,this->y /=	 v.y };
+			return *this;
+		}
+		////////
+		Vector2 operator += (float v)
+		{
+			Vector2{ this->x += v,this->y += v };
+			return *this;
+		}
+		Vector2 operator -= (float v)
+		{
+			Vector2{ this->x -= v,this->y -= v };
+			return *this;
+		}
+		Vector2 operator *= (float v)
+		{
+			Vector2{ this->x *= v,this->y *=v};
+			return *this;
+		}
+		Vector2 operator /= (float v)
+		{
+			Vector2{ this->x /= v,this->y /= v };
+			return *this;
+		}
+
+
+		float LengthSqr() const { return (x + x) + (y * y); }
+		float Length() const { return (std::sqrt(LengthSqr())); }
 	};
 }

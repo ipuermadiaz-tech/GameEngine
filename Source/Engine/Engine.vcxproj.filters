@@ -17,6 +17,12 @@
     <ClCompile Include="Renderer.cpp">
       <Filter>Source</Filter>
     </ClCompile>
+    <ClCompile Include="Input.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="GameTime.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine.h">
@@ -30,6 +36,15 @@
     </ClInclude>
     <ClInclude Include="Vector2.h">
       <Filter>Source</Filter>
+    </ClInclude>
+    <ClInclude Include="Input.h">
+      <Filter>Source</Filter>
+    </ClInclude>
+    <ClInclude Include="GameTime.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="Math_Util.h">
+      <Filter>Include</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

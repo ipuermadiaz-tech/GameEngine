@@ -18,6 +18,7 @@ bool nu::Renderer::Initialize(const char* name, int width, int height) {
         SDL_Quit();
         return 1;
     }
+    SDL_SetRenderVSync(m_renderer, 1);
     return 0;
 
 }
@@ -29,23 +30,23 @@ void nu::Renderer::Shutdown()
     SDL_Quit();
 }
 
-void nu::Renderer::SetColor(Uint8 r, Uint8 g, Uint8 b, Uint8 a) {
+void nu::Renderer::SetColor(Uint8 r, Uint8 g, Uint8 b, Uint8 a) const{
 
     SDL_SetRenderDrawColor(m_renderer, r, g, b, a); // Set render draw color to black
 }
 
 
-void nu::Renderer::Clear()
+void nu::Renderer::Clear() const
 {
     SDL_RenderClear(m_renderer); // Clear the renderer
 }
 
-void nu::Renderer::DrawPoint(float x, float y)
+void nu::Renderer::DrawPoint(float x, float y) const
 {
     SDL_RenderPoint(m_renderer, x, y);
 }
 
-void nu::Renderer::DrawLine(float x1, float y1, float x2, float y2)
+void nu::Renderer::DrawLine(float x1, float y1, float x2, float y2) const
 {
 
 
@@ -58,13 +59,13 @@ void nu::Renderer::Present()
     SDL_RenderPresent(m_renderer); // Render the screen
 }
 
-void nu::Renderer::DrawFillRect(float x, float y, float w, float h)
+void nu::Renderer::DrawFillRect(float x, float y, float w, float h) const
 {
     SDL_FRect rect{ x,y,w,h };
     SDL_RenderFillRect(m_renderer,&rect);
 }
 
-void nu::Renderer::DrawRect(float x, float y, float w, float h)
+void nu::Renderer::DrawRect(float x, float y, float w, float h) const
 
 {
      SDL_FRect rect{ x,y,w,h };

@@ -7,16 +7,16 @@ namespace nu {
 		bool Initialize(const char* name, int width=1920, int height=1024);
 		void Shutdown();
 
-		void SetColor(Uint8 r,Uint8 g,Uint8 b, Uint8 a=255);
+		void SetColor(Uint8 r,Uint8 g,Uint8 b, Uint8 a=255) const;
 
 
-		void Clear();
-		void DrawPoint(float x, float y);
-		void DrawLine(float x1, float y1, float x2, float y2);
+		void Clear() const;
+		void DrawPoint(float x, float y) const;
+		void DrawLine(float x1, float y1, float x2, float y2) const;
 
 		void Present();
-		void DrawFillRect(float x, float y, float w, float h);
-		void DrawRect(float x, float y, float w, float h);
+		void DrawFillRect(float x, float y, float w, float h) const;
+		void DrawRect(float x, float y, float w, float h) const;
 
 
 
