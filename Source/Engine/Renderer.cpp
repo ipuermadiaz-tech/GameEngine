@@ -1,8 +1,14 @@
 #include "Renderer.h"
 #include <iostream>
+#include "Transformer.h"
+#include "Mesh.h"
+#include "Model.h"
 
 bool nu::Renderer::Initialize(const char* name, int width, int height) {
     SDL_Init(SDL_INIT_VIDEO);
+    m_height = height;
+        m_width = width;
+        m_height = height;
 
     m_window = SDL_CreateWindow(name, width, height, 0);
     if (m_window == nullptr) {
@@ -70,4 +76,28 @@ void nu::Renderer::DrawRect(float x, float y, float w, float h) const
 {
      SDL_FRect rect{ x,y,w,h };
     SDL_RenderRect(m_renderer,&rect);
+}
+
+void nu::Renderer::DrawModel(const Model& model, const Transform& transform) const
+{
+    //SetColor(model.GetColor().r, model.GetColor().g, model.GetColor().b, 1.0f);
+    for (const auto& mesh : model.GetMeshes()) {
+        SetColor(1.0f, 1.0f, 1.0f);
+        auto& points = mesh.GetPoints();
+        for (int i = 0;i + 1 < points.size();i++)
+        {
+            Vector2 v1 = points[i];
+            Vector2 v2 = points[i + 1];
+
+            //
+            v1 *= transform.scale;
+            v2 *= transform.scale;
+
+            v1 += transform.position;
+            v2 += transform.position;
+
+            DrawLine(v1.x, v1.y, v2.x, v2.y);
+        }
+    }
+
 }

@@ -6,56 +6,19 @@
 #include "Main.h"
 using namespace nu;
 
-struct Transform {
-    Vector2 position;
-    float rotation;
-    float scale;
-    Vector2 velocity;
-};
 
-class Actor
-
-{
-public:
-    Actor(const Transform& transform) : m_transform{ transform } {}
-    Actor() = default;
-    void Update(float dt)
-    {
-        m_transform.position += (m_velocity * dt);
-
-
-        m_transform.position.x = Wrap(0.0f, 1920.0f, m_transform.position.x);
-
-        m_transform.position.y = Wrap(0.0f, 1024.0f, m_transform.position.y);
-    }
-
-
-        void Draw(const Renderer &renderer)
-        {
-
-            renderer.SetColor(255.0f, 255.0f, .0f);
-            renderer.DrawFillRect(m_transform.position.x - (m_transform.scale *0.5f), m_transform.position.y, 50, 50);
-        }
-        const Transform& GetTransform() { return m_transform; }
-
-        void SetPosition(const Vector2& position) { m_transform.position = position; }
-        void SetRotation(float rotation) { m_transform.rotation = rotation; }
-        void SetScale(float scale) { m_transform.scale = scale; }
-        void SetVelocity(Vector2 velocity) { m_transform.velocity = velocity; }
-        Vector2 GetVelocity() { return m_velocity; };
-        const Vector2& GetVelocity() const { return m_velocity; }
-
-
-    
-
-protected:
-    Transform m_transform;
-    Vector2 m_velocity{ 0,0 };
-
-};
 
 
 int main(int argc, char* argv[]) {
+
+
+
+
+    union
+    {
+        struct { float x, y, z; };
+        struct { float r, g, b; };
+    };
 
     nu::Renderer renderer;
     renderer.Initialize("Game Engine", 1920, 1024);
@@ -64,7 +27,16 @@ int main(int argc, char* argv[]) {
     Vector2 position{ 640,512 };
     float speed = 400.0f;
     
+    Mesh mesh{ {Vector2{-3.0f, 3.0f}, Vector2{3.0f, 3.0f}, Vector2{0.0f, 0.0f}}, Color{0.0f, 0.0f, 0.0f} };
+
+   // Mesh mesh{ {Vector2{-3,3},Vector2{3,3},Vector2{0,0},Color{0.0,0.0,0.0}} };
     Actor player{ Transform{Vector2{640.0f,512.0f},0.0f,50.0f} };
+
+
+
+
+
+    //Actor player{ Transform{Vector2{640.0f,512.0f},0.0f,50.0f} };
 
 	nu::Input input;
 

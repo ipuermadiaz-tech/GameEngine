@@ -24,7 +24,7 @@ namespace nu
 		//bool GetKeyPressed(int key) const { return m_keyStates[key] && !m_prevKeyStates[key]; }
 		bool GetKeyReleased(int key) const { return !m_keyStates[key] && m_prevKeyStates[key]; }
 		bool GetButtonDown(MouseButton button) const { return m_prevButtonStates & GetButtonBit(button); }
-		uint32_t GetButtonBit(MouseButton button) const;
+		//uint32_t GetButtonBit(MouseButton button) const;
 		
 
 
@@ -55,5 +55,7 @@ bool GetButtonReleased(MouseButton button) const {
 		uint32_t m_prevButtonStates=0;
 
 		Vector2 m_mousePosition=0;
+
+		uint32_t GetButtonBit(MouseButton button) const;
 	};
 }
