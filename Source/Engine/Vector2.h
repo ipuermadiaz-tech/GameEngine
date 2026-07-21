@@ -118,8 +118,8 @@ namespace nu
 		Vector2 Rotate(float radians) const
 		{
 			Vector2 v;
-			v.x = x * std::cos(radians) - y * std::sin(radians); 
-			v.y = x * std::sin(radians) + y * std::cos(radians);
+			v.x = this->x * std::cos(radians) - this->y * std::sin(radians); 
+			v.y = this->x * std::sin(radians) + this->y * std::cos(radians);
 
 			return v;
 		}

@@ -4,6 +4,8 @@ namespace nu
 	constexpr float Pi = 3.1415926535;
 	constexpr float TwoPi = Pi * 2;
 	constexpr float HalfPi = 1.5707963267;
+	constexpr float RadToDeg = 180.0f / Pi;
+	constexpr float DegToRad = Pi / 180.0f;
 
 	template<typename T>
 	T Wrap(T min,T max, T value) {

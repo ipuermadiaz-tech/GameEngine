@@ -3,6 +3,7 @@
 #include "Transformer.h"
 #include "Mesh.h"
 #include "Model.h"
+#include "Math_Util.h"
 
 bool nu::Renderer::Initialize(const char* name, int width, int height) {
     SDL_Init(SDL_INIT_VIDEO);
@@ -80,9 +81,11 @@ void nu::Renderer::DrawRect(float x, float y, float w, float h) const
 
 void nu::Renderer::DrawModel(const Model& model, const Transform& transform) const
 {
-    //SetColor(model.GetColor().r, model.GetColor().g, model.GetColor().b, 1.0f);
+   
     for (const auto& mesh : model.GetMeshes()) {
-        SetColor(1.0f, 1.0f, 1.0f);
+        SetColor(mesh.GetColor().x, mesh.GetColor().y, mesh.GetColor().z, 1.0f);
+
+        //SetColor(244.0f, 244.0f, 244.0f);
         auto& points = mesh.GetPoints();
         for (int i = 0;i + 1 < points.size();i++)
         {
@@ -92,6 +95,9 @@ void nu::Renderer::DrawModel(const Model& model, const Transform& transform) con
             //
             v1 *= transform.scale;
             v2 *= transform.scale;
+
+            v1 = v1.Rotate(transform.rotation*DegToRad);
+            v2 = v2.Rotate(transform.rotation * DegToRad);
 
             v1 += transform.position;
             v2 += transform.position;

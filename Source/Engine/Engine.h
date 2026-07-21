@@ -10,7 +10,36 @@
 #include "Math_Util.h"
 #include "Transformer.h"
 #include "Actor.h"
+#include "Scene.h"
+
+
+//void fnEngine();
+
+namespace nu
+{
+	class Engine
+	{
+	public:
+		Engine() = default;
+		bool Initialize();
+		void ShutDown();
+		void Update();
+
+		/////////////////////
+		Input& GetInput() { return m_input; }
+		Renderer& GetRenderer() { return m_renderer; }
+		GameTime& GetTime() { return m_time; }
 
 
 
-void fnEngine();
+	private:
+		Input m_input;
+		Renderer m_renderer;
+
+		GameTime m_time;
+
+	};
+
+	extern Engine g_engine;
+
+}
