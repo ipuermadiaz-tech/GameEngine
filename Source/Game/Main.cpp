@@ -5,16 +5,52 @@
 #include "Engine.h"
 #include "Player.h"
 #include "Main.h"
+#include <fmod.hpp>
+
+
+
+
 using namespace nu;
 
 
 
 
 int main(int argc, char* argv[]) {
-    Engine engine;
+   Engine engine;
     g_engine.Initialize();
 
+    FMOD::System* audio;
+    FMOD::System_Create(&audio);
 
+    void* extradriverdata = nullptr;
+    audio->init(32, FMOD_INIT_NORMAL, extradriverdata);
+    std::vector<FMOD::Sound*> sounds;
+
+    FMOD::Sound* sound = nullptr;
+    audio->createSound("clap.wav", FMOD_DEFAULT, 0, &sound);
+    sounds.push_back(sound);
+   
+
+     sound = nullptr;
+    audio->createSound("cowbell.wav", FMOD_DEFAULT, 0, &sound);
+    sounds.push_back(sound);
+
+    sound = nullptr;
+    audio->createSound("snare.wav", FMOD_DEFAULT, 0, &sound);
+    sounds.push_back(sound);
+
+    sound = nullptr;
+    audio->createSound("bass.wav", FMOD_DEFAULT, 0, &sound);
+    sounds.push_back(sound);
+    sound = nullptr;
+    audio->createSound("close-hat.wav", FMOD_DEFAULT, 0, &sound);
+    sounds.push_back(sound);
+
+
+
+
+
+   
 
     union
     {
@@ -35,7 +71,12 @@ int main(int argc, char* argv[]) {
 
     // mesh/Model
     Mesh mesh{ {Vector2{-3.0f, 3.0f}, Vector2{3.0f, 3.0f}, Vector2{0.0f, 0.0f},Vector2{-3.0f, 3.0f}}, Color{255.0f, 255.0f, 255.0f} };
-    Model model = std::vector<Mesh>{ mesh };
+    Mesh mesh2{ {Vector2{-3.0f, 7.0f}, Vector2{3.0f, 3.0f}, Vector2{0.0f, 0.0f},Vector2{-3.0f, 7.0f}}, Color{255.0f, 10.0f, 255.0f} };
+    Mesh mesh3{ {Vector2{2.0f, 7.0f}, Vector2{6.0f, 6.0f}, Vector2{0.0f, 0.0f},Vector2{2.0f, 7.0f}}, Color{255.0f, 10.0f, 2.0f} };
+    Mesh mesh4{ {Vector2{8.0f, 7.0f}, Vector2{6.0f, 6.0f}, Vector2{2.0f, 2.0f},Vector2{8.0f, 7.0f}}, Color{255.0f, 250.0f, 2.0f} };
+    //Mesh mesh4{ {Vector2{-2.0f, 7.0f}, Vector2{6.0f, 6.0f},Vector2{-2.0f, 7.0f}}, Color{705.0f, 102.0f, 2.0f} };
+    Model model = std::vector<Mesh>{ mesh,mesh2,mesh3,mesh4 };
+    Model model2 = std::vector<Mesh>{ mesh };
     //Player
     Player* player= new Player{Transform{Vector2{640.0f,512.0f},0.0f,15.0f}, model};
    
@@ -44,11 +85,12 @@ int main(int argc, char* argv[]) {
    // Actor player{ Transform{Vector2{640.0f,512.0f},0.0f,50.0f} };
     scene.AddActor(player);
     for (int i = 0;i < 20;i++) {
-        Enemy* enemy = new Enemy{ Transform{Vector2{ru::RandomFloat(1900.0f),ru::RandomFloat(1200.0f)},90.0f,10.0f}, model };
+        Enemy* enemy = new Enemy{ Transform{Vector2{ru::RandomFloat(1900.0f),ru::RandomFloat(1200.0f)},90.0f,10.0f}, model2 };
         scene.AddActor(enemy);
 
     };
- 
+
+   
 
 
 
@@ -90,6 +132,33 @@ int main(int argc, char* argv[]) {
        }
         //emgome
         g_engine.Update();
+        if (g_engine.GetInput().GetKeyPressed(SDL_SCANCODE_1))
+        {
+            audio->playSound(sounds[0], nullptr, false, nullptr);
+        }
+
+        if (g_engine.GetInput().GetKeyPressed(SDL_SCANCODE_2))
+        {
+            audio->playSound(sounds[1], nullptr, false, nullptr);
+        }
+        else if (g_engine.GetInput().GetKeyPressed(SDL_SCANCODE_3))
+        {
+            audio->playSound(sounds[2], nullptr, false, nullptr);
+        }
+        else if (g_engine.GetInput().GetKeyPressed(SDL_SCANCODE_4))
+        {
+            audio->playSound(sounds[3], nullptr, false, nullptr);
+        }
+        else if (g_engine.GetInput().GetKeyPressed(SDL_SCANCODE_5))
+        {
+            audio->playSound(sounds[4], nullptr, false, nullptr);
+        }
+
+        audio->update();
+
+     
+
+
 
 
 		//input.Update();

@@ -1,7 +1,13 @@
 #pragma once
 #include <SDL3/SDL.h>
+
+#ifdef ENGINE_EXPORTS
+#define ENGINE_API __declspec(dllexport)
+#else
+#define ENGINE_API __declspec(dllimport)
+#endif
 namespace nu {
-	class Renderer
+	class ENGINE_API Renderer
 	{
 	public:
 		bool Initialize(const char* name, int width=1920, int height=1024);

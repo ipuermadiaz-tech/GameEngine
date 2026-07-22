@@ -1,11 +1,18 @@
 #pragma once
 #include <vector>
 //#include "Actor.h"
+
+
+#ifdef ENGINE_EXPORTS
+#define ENGINE_API __declspec(dllexport)
+#else
+#define ENGINE_API __declspec(dllimport)
+#endif
 namespace nu
 {
 
 	class Actor;
-	class Scene
+	class ENGINE_API Scene
 	{
 	public:
 		void AddActor(Actor* actor) { m_actors.push_back(actor); }

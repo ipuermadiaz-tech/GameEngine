@@ -1,8 +1,15 @@
 #pragma once
 #include "Mesh.h"
+
+
+#ifdef ENGINE_EXPORTS
+#define ENGINE_API __declspec(dllexport)
+#else
+#define ENGINE_API __declspec(dllimport)
+#endif
 namespace nu
 {
-	class Model
+	class ENGINE_API Model
 	{
 	public:
 		Model() = default;

@@ -12,18 +12,25 @@
 #include "Actor.h"
 #include "Scene.h"
 
+#ifdef ENGINE_EXPORTS
+#define ENGINE_API __declspec(dllexport)
+#else
+#define ENGINE_API __declspec(dllimport)
+#endif
+
+
 
 //void fnEngine();
 
 namespace nu
 {
-	class Engine
-	{
+	class ENGINE_API Engine {
 	public:
 		Engine() = default;
 		bool Initialize();
 		void ShutDown();
 		void Update();
+		void Init();
 
 		/////////////////////
 		Input& GetInput() { return m_input; }
@@ -40,6 +47,6 @@ namespace nu
 
 	};
 
-	extern Engine g_engine;
+	extern ENGINE_API Engine g_engine;
 
 }

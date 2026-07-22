@@ -4,9 +4,16 @@
 #include "Math_Util.h"
 #include "Model.h"
 #include <iostream>
+
+#ifdef ENGINE_EXPORTS
+#define ENGINE_API __declspec(dllexport)
+#else
+#define ENGINE_API __declspec(dllimport)
+#endif
+
 namespace nu
 {
-    struct  ActorDesc
+    struct ENGINE_API ActorDesc
     {
         std::string name;
         std::string tag;
@@ -15,15 +22,22 @@ namespace nu
         Model model;
     };
 
-    class Actor
+    class ENGINE_API Actor
 
     {
 
 public:
-    Actor() = default;
-    //Actor(const ActorDesc& actorDesc):
+    Actor(const ActorDesc& actorDesc) :
+        m_name{ actorDesc.name },
+        m_tag{ actorDesc.tag },
+        m_transform{ actorDesc.transform },
+        m_velocity{ actorDesc.velocity },
+        m_model{ actorDesc.model }
+    {
+    }
 
 
+     Actor() = default;
     Actor(const Transform& transform) : m_transform{ transform } {}
     Actor(const Transform& transform, const Model& model):
         m_transform{transform},
