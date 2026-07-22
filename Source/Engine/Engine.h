@@ -11,22 +11,23 @@
 #include "Transformer.h"
 #include "Actor.h"
 #include "Scene.h"
-
-#ifdef ENGINE_EXPORTS
-#define ENGINE_API __declspec(dllexport)
-#else
-#define ENGINE_API __declspec(dllimport)
-#endif
-
+#include "File.h"
 
 
 //void fnEngine();
 
+//void f()
+//{
+//	static int i;
+//	i++;
+//	std::cout << i << std::endl;
+//}
+
 namespace nu
 {
-	class ENGINE_API Engine {
+	class Engine {
 	public:
-		Engine() = default;
+		static Engine& Get() { static Engine g_engine;return g_engine; }
 		bool Initialize();
 		void ShutDown();
 		void Update();
@@ -36,10 +37,11 @@ namespace nu
 		Input& GetInput() { return m_input; }
 		Renderer& GetRenderer() { return m_renderer; }
 		GameTime& GetTime() { return m_time; }
-
+		Engine& operator = (const Engine&) = delete;
 
 
 	private:
+		Engine() = default;
 		Input m_input;
 		Renderer m_renderer;
 
@@ -47,6 +49,6 @@ namespace nu
 
 	};
 
-	extern ENGINE_API Engine g_engine;
+	//extern ENGINE_API Engine g_engine;
 
 }

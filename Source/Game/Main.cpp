@@ -16,8 +16,65 @@ using namespace nu;
 
 
 int main(int argc, char* argv[]) {
-   Engine engine;
-    g_engine.Initialize();
+    //file
+      // get current working directory
+    std::cout << "Directory Operations:\n";
+    std::cout << "Working directory: " << nu::GetWorkingDirectory() << "\n";
+
+    // set working directory (current working directory + "Assets")
+    std::cout << "Setting directory to 'Assets'...\n";
+    nu::SetWorkingDirectory("Assets");
+    std::cout << "New directory: " << nu::GetWorkingDirectory() << "\n\n";
+
+    // get filenames in the working directory
+    std::cout << "Files in Directory:\n";
+    auto filenames = nu::GetFilesInDirectory(nu::GetWorkingDirectory());
+    for (const auto& filename : filenames)
+    {
+        std::cout << filename << "\n";
+    }
+    std::cout << "\n";
+
+    // get filename info
+    if (!filenames.empty())
+    {
+        // get filename
+        std::string str = nu::GetFilename(filenames[0]);
+        std::cout << "Filename: " << str << "\n";
+
+        // get extension
+        str = nu::GetFileExtension(filenames[0]);
+        std::cout << "Extension: " << str << "\n";
+
+        // get filename no extension
+        str = nu::GetFilenameNoExtension(filenames[0]);
+        std::cout << "Filename No Extension: " << str << "\n\n";
+    }
+
+    // read and display text file
+    std::cout << "Text File Reading:\n";
+    std::string str;
+    if (nu::ReadTextFile("test.txt", str))
+    {
+        std::cout << str << "\n";
+    }
+
+    // write to text file
+    std::cout << "Text File Writing:\n";
+    nu::WriteTextFile("test.txt", "Hello, World!", true);
+    if (nu::ReadTextFile("test.txt", str))
+    {
+        std::cout << str << "\n";
+    }
+
+
+
+
+
+
+
+  // Engine engine;
+    Engine::Get().Initialize();
 
     FMOD::System* audio;
     FMOD::System_Create(&audio);
@@ -45,12 +102,6 @@ int main(int argc, char* argv[]) {
     sound = nullptr;
     audio->createSound("close-hat.wav", FMOD_DEFAULT, 0, &sound);
     sounds.push_back(sound);
-
-
-
-
-
-   
 
     union
     {
@@ -131,25 +182,25 @@ int main(int argc, char* argv[]) {
             }
        }
         //emgome
-        g_engine.Update();
-        if (g_engine.GetInput().GetKeyPressed(SDL_SCANCODE_1))
+        Engine::Get().Update();
+        if (Engine::Get().GetInput().GetKeyPressed(SDL_SCANCODE_1))
         {
             audio->playSound(sounds[0], nullptr, false, nullptr);
         }
 
-        if (g_engine.GetInput().GetKeyPressed(SDL_SCANCODE_2))
+        if (Engine::Get().GetInput().GetKeyPressed(SDL_SCANCODE_2))
         {
             audio->playSound(sounds[1], nullptr, false, nullptr);
         }
-        else if (g_engine.GetInput().GetKeyPressed(SDL_SCANCODE_3))
+        else if (Engine::Get().GetInput().GetKeyPressed(SDL_SCANCODE_3))
         {
             audio->playSound(sounds[2], nullptr, false, nullptr);
         }
-        else if (g_engine.GetInput().GetKeyPressed(SDL_SCANCODE_4))
+        else if (Engine::Get().GetInput().GetKeyPressed(SDL_SCANCODE_4))
         {
             audio->playSound(sounds[3], nullptr, false, nullptr);
         }
-        else if (g_engine.GetInput().GetKeyPressed(SDL_SCANCODE_5))
+        else if (Engine::Get().GetInput().GetKeyPressed(SDL_SCANCODE_5))
         {
             audio->playSound(sounds[4], nullptr, false, nullptr);
         }
@@ -217,7 +268,7 @@ int main(int argc, char* argv[]) {
         //if (position.x < 0) position.x = 1279;
 
         //RENDER
-        g_engine.GetRenderer().SetColor(0, 0, 0);
+        Engine::Get().GetRenderer().SetColor(0, 0, 0);
        
         //g_engine.GetRenderer().DrawFillRect(position.x, position.y, 50, 50);
 
@@ -236,11 +287,11 @@ int main(int argc, char* argv[]) {
         //}
 
         for (int i = 0; i < points.size(); i++) {
-            g_engine.GetRenderer().SetColor(ru::RandomInt(255), ru::RandomInt(255), ru::RandomInt(255));
+            Engine::Get().GetRenderer().SetColor(ru::RandomInt(255), ru::RandomInt(255), ru::RandomInt(255));
 
             //points[i] = points[i];
 
-            g_engine.GetRenderer().DrawPoint(points[i].x, points[i].y);
+            Engine::Get().GetRenderer().DrawPoint(points[i].x, points[i].y);
           
         }
         //if(input.GetButtonPressed(Input::MouseButton::Left))
@@ -270,7 +321,7 @@ int main(int argc, char* argv[]) {
 
         //    }
         //}
-        if (g_engine.GetInput().GetButtonPressed(Input::MouseButton::Right))
+        if (Engine::Get().GetInput().GetButtonPressed(Input::MouseButton::Right))
         {
             if (!points.empty()) { points.pop_back(); }
 
@@ -292,21 +343,21 @@ int main(int argc, char* argv[]) {
         //    renderer.DrawLine(ru::RandomFloat(1920), ru::RandomFloat(1024), ru::RandomFloat(100), ru::RandomFloat(200));
         //}
 
-        g_engine.GetRenderer().Clear();
+        Engine::Get().GetRenderer().Clear();
 
 
 
-        g_engine.GetRenderer().SetColor(255.0f, 255.0f, .0f);
+        Engine::Get().GetRenderer().SetColor(255.0f, 255.0f, .0f);
 
         //player.Draw(g_engine.GetRenderer());
         //enemy.Draw(g_engine.GetRenderer());
-        scene.Draw(g_engine.GetRenderer());
+        scene.Draw(Engine::Get().GetRenderer());
 
 
-        g_engine.GetRenderer().Present();
+        Engine::Get().GetRenderer().Present();
     }
     //SHUTDOWN
-    g_engine.ShutDown();
+    Engine::Get().ShutDown();
 
     return 0;
 }

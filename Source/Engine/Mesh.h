@@ -3,15 +3,10 @@
 #include "Vector3.h"
 #include <vector>
 
-#ifdef ENGINE_EXPORTS
-#define ENGINE_API __declspec(dllexport)
-#else
-#define ENGINE_API __declspec(dllimport)
-#endif
 
 namespace nu
 {
-	class ENGINE_API Mesh
+	class Mesh
 	{
 	public:
 		Mesh() = default;

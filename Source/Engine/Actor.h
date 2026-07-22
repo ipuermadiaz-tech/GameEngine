@@ -5,15 +5,12 @@
 #include "Model.h"
 #include <iostream>
 
-#ifdef ENGINE_EXPORTS
-#define ENGINE_API __declspec(dllexport)
-#else
-#define ENGINE_API __declspec(dllimport)
-#endif
 
 namespace nu
 {
-    struct ENGINE_API ActorDesc
+    class Scene;
+
+    struct  ActorDesc
     {
         std::string name;
         std::string tag;
@@ -22,7 +19,7 @@ namespace nu
         Model model;
     };
 
-    class ENGINE_API Actor
+    class Actor
 
     {
 
@@ -63,13 +60,17 @@ public:
    const std::string GetName() const { return m_name; }
    const std::string& GetTag() const { return m_tag; }
 
+   Scene* GetScene() { return m_scene; }
+   friend Scene;
+
 
 protected:
-    std::string m_name;
+    std::string m_name="Player";
     std::string m_tag;
     Transform m_transform;
     Vector2 m_velocity{ 0,0 };
     Model m_model;
+    Scene* m_scene{ nullptr };
     
 
 };

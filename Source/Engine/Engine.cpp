@@ -5,7 +5,7 @@
 
 namespace nu
 {
-	Engine g_engine;
+	//Engine g_engine;
 
 	bool Engine::Initialize()
 	{
