@@ -14,6 +14,7 @@
 #include "File.h"
 #include "Text.h"
 #include "Game.h"
+#include "Audio.h"
 
 //void fnEngine();
 
@@ -39,13 +40,14 @@ namespace nu
 		Renderer& GetRenderer() { return m_renderer; }
 		GameTime& GetTime() { return m_time; }
 		Engine& operator = (const Engine&) = delete;
+		Audio& GetAudio() { return m_audio; }
 
 
 	private:
 		Engine() = default;
 		Input m_input;
 		Renderer m_renderer;
-
+		Audio m_audio;
 		GameTime m_time;
 
 	};

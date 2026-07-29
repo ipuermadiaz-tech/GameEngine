@@ -47,6 +47,9 @@
     <ClCompile Include="Game.cpp">
       <Filter>Source</Filter>
     </ClCompile>
+    <ClCompile Include="Audio.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine.h">
@@ -98,6 +101,9 @@
       <Filter>Source</Filter>
     </ClInclude>
     <ClInclude Include="Game.h">
+      <Filter>Source</Filter>
+    </ClInclude>
+    <ClInclude Include="Audio.h">
       <Filter>Source</Filter>
     </ClInclude>
   </ItemGroup>

@@ -131,6 +131,9 @@ int main(int argc, char* argv[]) {
     audio->createSound("close-hat.wav", FMOD_DEFAULT, 0, &sound);
     sounds.push_back(sound);
 
+    Engine::Get().GetAudio().AddSound("bass", "bass.wav");
+
+
     union
     {
         struct { float x, y, z; };
@@ -162,7 +165,7 @@ int main(int argc, char* argv[]) {
     playerDesc.name = "Player";
     playerDesc.tag = "Player";
     playerDesc.speed = 800.0f;
-    playerDesc.damping = 3.0f;
+    playerDesc.damping = 0.3f;
     playerDesc.model = model;
     playerDesc.transform = Transform{ Vector2{640.0f,512.0f},0.0f,15.0f };
 
@@ -230,29 +233,34 @@ int main(int argc, char* argv[]) {
                 quit=true;
             }
        }
-        //emgome
-        Engine::Get().Update();
+
         if (Engine::Get().GetInput().GetKeyPressed(SDL_SCANCODE_1))
         {
-            audio->playSound(sounds[0], nullptr, false, nullptr);
+            Engine::Get().GetAudio().PlaySound("bass");
         }
+        //emgome
+        Engine::Get().Update();
+        //if (Engine::Get().GetInput().GetKeyPressed(SDL_SCANCODE_1))
+        //{
+        //    audio->playSound(sounds[0], nullptr, false, nullptr);
+        //}
 
-        if (Engine::Get().GetInput().GetKeyPressed(SDL_SCANCODE_2))
-        {
-            audio->playSound(sounds[1], nullptr, false, nullptr);
-        }
-        else if (Engine::Get().GetInput().GetKeyPressed(SDL_SCANCODE_3))
-        {
-            audio->playSound(sounds[2], nullptr, false, nullptr);
-        }
-        else if (Engine::Get().GetInput().GetKeyPressed(SDL_SCANCODE_4))
-        {
-            audio->playSound(sounds[3], nullptr, false, nullptr);
-        }
-        else if (Engine::Get().GetInput().GetKeyPressed(SDL_SCANCODE_5))
-        {
-            audio->playSound(sounds[4], nullptr, false, nullptr);
-        }
+        //if (Engine::Get().GetInput().GetKeyPressed(SDL_SCANCODE_2))
+        //{
+        //    audio->playSound(sounds[1], nullptr, false, nullptr);
+        //}
+        //else if (Engine::Get().GetInput().GetKeyPressed(SDL_SCANCODE_3))
+        //{
+        //    audio->playSound(sounds[2], nullptr, false, nullptr);
+        //}
+        //else if (Engine::Get().GetInput().GetKeyPressed(SDL_SCANCODE_4))
+        //{
+        //    audio->playSound(sounds[3], nullptr, false, nullptr);
+        //}
+        //else if (Engine::Get().GetInput().GetKeyPressed(SDL_SCANCODE_5))
+        //{
+        //    audio->playSound(sounds[4], nullptr, false, nullptr);
+        //}
 
         audio->update();
 
