@@ -9,6 +9,6 @@ namespace nu
         Vector2 position;
         float rotation;
         float scale;
-        Vector2 velocity;
+        //Vector2 velocity;
     };
 }

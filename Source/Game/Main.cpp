@@ -6,16 +6,30 @@
 #include "Player.h"
 #include "Main.h"
 #include <fmod.hpp>
-
+#include <map>
+#include "SpaceGame.h"
 
 
 
 using namespace nu;
 
 
-
-
 int main(int argc, char* argv[]) {
+    /*
+    std::map<std::string, int> students;
+
+    students["Aiden"] = 16;
+    students["Jack"] = 17;
+    students["River"] = 15;
+    
+    if (students.contains("Aiden")) {
+
+        std::cout << "found.\n";
+    }
+    //
+    std::cout << students["Aiden"] << std::endl;
+
+    int timer = 0;
     //file
       // get current working directory
     std::cout << "Directory Operations:\n";
@@ -66,15 +80,29 @@ int main(int argc, char* argv[]) {
     {
         std::cout << str << "\n";
     }
+    */
 
 
 
 
 
-
-
+    nu::SetWorkingDirectory("Assets");
   // Engine engine;
     Engine::Get().Initialize();
+
+    SpaceGame sgame;
+    sgame.Initialize();
+
+
+
+    Font* font = new Font();
+    font->Load("fonts/Handmade_Calligraphy.ttf", 64);
+    
+
+    Text* text = new Text(font);
+    text->Create(Engine::Get().GetRenderer(), "Hello World", Color{ 1.0f, 1.0f, 1.0f});
+
+
 
     FMOD::System* audio;
     FMOD::System_Create(&audio);
@@ -129,14 +157,33 @@ int main(int argc, char* argv[]) {
     Model model = std::vector<Mesh>{ mesh,mesh2,mesh3,mesh4 };
     Model model2 = std::vector<Mesh>{ mesh };
     //Player
-    Player* player= new Player{Transform{Vector2{640.0f,512.0f},0.0f,15.0f}, model};
+
+    PlayerDesc playerDesc;
+    playerDesc.name = "Player";
+    playerDesc.tag = "Player";
+    playerDesc.speed = 800.0f;
+    playerDesc.damping = 3.0f;
+    playerDesc.model = model;
+    playerDesc.transform = Transform{ Vector2{640.0f,512.0f},0.0f,15.0f };
+
+    Player* player= new Player{playerDesc};
    
     //Actor player{Transform{Vector2{640.0f,512.0f}}
    // Mesh mesh{ {Vector2{-3,3},Vector2{3,3},Vector2{0,0},Color{0.0,0.0,0.0}} };
    // Actor player{ Transform{Vector2{640.0f,512.0f},0.0f,50.0f} };
+
+
     scene.AddActor(player);
     for (int i = 0;i < 20;i++) {
-        Enemy* enemy = new Enemy{ Transform{Vector2{ru::RandomFloat(1900.0f),ru::RandomFloat(1200.0f)},90.0f,10.0f}, model2 };
+        EnemyDesc enemyDesc;
+        enemyDesc.name = "Enmemy";
+        enemyDesc.tag = "Enemy";
+        enemyDesc.speed = 800.0f;
+        enemyDesc.damping = 3.0f;
+        enemyDesc.model = model2;
+        enemyDesc.transform = Transform{ Vector2{ru::RandomFloat(1900.0f),ru::RandomFloat(1200.0f)},90.0f,10.0f };
+
+        Enemy* enemy = new Enemy{ enemyDesc };
         scene.AddActor(enemy);
 
     };
@@ -172,6 +219,8 @@ int main(int argc, char* argv[]) {
     bool quit = false;
     	//input.Initialize();
     while (!quit) {
+        
+
         //UPDATE
         while (SDL_PollEvent(&event)) {
             if (event.type == SDL_EVENT_QUIT) {
@@ -294,6 +343,7 @@ int main(int argc, char* argv[]) {
             Engine::Get().GetRenderer().DrawPoint(points[i].x, points[i].y);
           
         }
+
         //if(input.GetButtonPressed(Input::MouseButton::Left))
         //{
         //    points.push_back(input.GetMousePosition());
@@ -351,7 +401,10 @@ int main(int argc, char* argv[]) {
 
         //player.Draw(g_engine.GetRenderer());
         //enemy.Draw(g_engine.GetRenderer());
+
         scene.Draw(Engine::Get().GetRenderer());
+
+        text->Draw(Engine::Get().GetRenderer(), 40.0f, 40.0f);
 
 
         Engine::Get().GetRenderer().Present();

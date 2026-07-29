@@ -39,6 +39,10 @@ void Player::Update(float dt)
     nu::Vector2 velocity=forward.Rotate(m_transform.rotation*nu::DegToRad)*thrust;
     
         AddVelocity(velocity * dt);
+
+
+
+
     
     Actor::Update(dt);
 }

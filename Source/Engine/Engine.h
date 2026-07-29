@@ -12,7 +12,8 @@
 #include "Actor.h"
 #include "Scene.h"
 #include "File.h"
-
+#include "Text.h"
+#include "Game.h"
 
 //void fnEngine();
 

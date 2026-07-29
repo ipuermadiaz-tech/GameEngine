@@ -7,9 +7,16 @@
 
 bool nu::Renderer::Initialize(const char* name, int width, int height) {
     SDL_Init(SDL_INIT_VIDEO);
+
     m_height = height;
         m_width = width;
         m_height = height;
+
+
+      if (!TTF_Init()) {
+            std::cerr << "TTF_Init Error: " << SDL_GetError() << std::endl;
+            return false;
+       }
 
     m_window = SDL_CreateWindow(name, width, height, 0);
     if (m_window == nullptr) {
@@ -26,12 +33,13 @@ bool nu::Renderer::Initialize(const char* name, int width, int height) {
         return 1;
     }
     SDL_SetRenderVSync(m_renderer, 1);
-    return 0;
-
+    
+    return true;
 }
 
 void nu::Renderer::Shutdown()
 {
+    TTF_Quit();
     SDL_DestroyRenderer(m_renderer);
     SDL_DestroyWindow(m_window);
     SDL_Quit();

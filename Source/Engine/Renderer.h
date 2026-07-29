@@ -1,5 +1,6 @@
 #pragma once
 #include <SDL3/SDL.h>
+#include <SDL3_ttf/SDL_ttf.h>
 
 
 namespace nu {
@@ -25,7 +26,7 @@ namespace nu {
 		int GetWidth() const { return m_width; };
 		int GetHeight() const { return m_height; };
 
-
+		friend class Text;
 
 	private:
 		SDL_Window* m_window=nullptr;

@@ -32,6 +32,21 @@
     <ClCompile Include="File.cpp">
       <Filter>Source</Filter>
     </ClCompile>
+    <ClCompile Include="Model.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Mesh.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Font.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Text.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Game.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine.h">
@@ -74,6 +89,15 @@
       <Filter>Source</Filter>
     </ClInclude>
     <ClInclude Include="File.h">
+      <Filter>Source</Filter>
+    </ClInclude>
+    <ClInclude Include="Font.h">
+      <Filter>Source</Filter>
+    </ClInclude>
+    <ClInclude Include="Text.h">
+      <Filter>Source</Filter>
+    </ClInclude>
+    <ClInclude Include="Game.h">
       <Filter>Source</Filter>
     </ClInclude>
   </ItemGroup>

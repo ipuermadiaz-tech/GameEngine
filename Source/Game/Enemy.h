@@ -35,9 +35,14 @@ public:
     {
     }
     void Update(float dt) override;
+
+    void OnCollision(Actor* other) override;
+
     void Draw(const class nu::Renderer& renderer) const override;
 
 private:
+    int m_counter=0;
+    bool upndown=true;
     int m_ammo = 0;
-    float m_speed = 100.0f;
+    float m_speed = 60.0f;
 };
