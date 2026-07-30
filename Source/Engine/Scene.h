@@ -12,12 +12,18 @@ namespace nu
 		void AddActor(Actor* actor);
 		void Update(float dt);
 		void Draw(const class Renderer& renderer);
+		void RemoveAllActors();
 		template<typename T=Actor>
 		T* GetActorByName(const std::string& name);
+		void SetGame(class Game* game) { m_game = game; }
+		class Game* GetGame() { return m_game; }
 	private:
 		void UpdateCollisions();
 	private:
 		std::vector<Actor*> m_actors;
+		std::vector<Actor*> m_pendingActors;
+
+		class Game* m_game;
    };
 	template<typename T>
 	inline T* Scene::GetActorByName(const std::string& name)

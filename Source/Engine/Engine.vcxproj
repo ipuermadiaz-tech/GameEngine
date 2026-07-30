@@ -176,6 +176,7 @@
     <ClCompile Include="Input.cpp" />
     <ClCompile Include="Mesh.cpp" />
     <ClCompile Include="Model.cpp" />
+    <ClCompile Include="ParticleSystem.cpp" />
     <ClCompile Include="Renderer.cpp" />
     <ClCompile Include="Actor.cpp" />
     <ClCompile Include="Scene.cpp" />
@@ -193,6 +194,7 @@
     <ClInclude Include="Input.h" />
     <ClInclude Include="Math_Util.h" />
     <ClInclude Include="Mesh.h" />
+    <ClInclude Include="ParticleSystem.h" />
     <ClInclude Include="Random.h" />
     <ClInclude Include="Renderer.h" />
     <ClInclude Include="Scene.h" />

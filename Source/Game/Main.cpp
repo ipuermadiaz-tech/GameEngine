@@ -95,12 +95,10 @@ int main(int argc, char* argv[]) {
 
 
 
-    Font* font = new Font();
-    font->Load("fonts/Handmade_Calligraphy.ttf", 64);
+   
     
 
-    Text* text = new Text(font);
-    text->Create(Engine::Get().GetRenderer(), "Hello World", Color{ 1.0f, 1.0f, 1.0f});
+    
 
 
 
@@ -131,7 +129,7 @@ int main(int argc, char* argv[]) {
     audio->createSound("close-hat.wav", FMOD_DEFAULT, 0, &sound);
     sounds.push_back(sound);
 
-    Engine::Get().GetAudio().AddSound("bass", "bass.wav");
+    
 
 
     union
@@ -152,45 +150,11 @@ int main(int argc, char* argv[]) {
     Scene scene;
 
     // mesh/Model
-    Mesh mesh{ {Vector2{-3.0f, 3.0f}, Vector2{3.0f, 3.0f}, Vector2{0.0f, 0.0f},Vector2{-3.0f, 3.0f}}, Color{255.0f, 255.0f, 255.0f} };
-    Mesh mesh2{ {Vector2{-3.0f, 7.0f}, Vector2{3.0f, 3.0f}, Vector2{0.0f, 0.0f},Vector2{-3.0f, 7.0f}}, Color{255.0f, 10.0f, 255.0f} };
-    Mesh mesh3{ {Vector2{2.0f, 7.0f}, Vector2{6.0f, 6.0f}, Vector2{0.0f, 0.0f},Vector2{2.0f, 7.0f}}, Color{255.0f, 10.0f, 2.0f} };
-    Mesh mesh4{ {Vector2{8.0f, 7.0f}, Vector2{6.0f, 6.0f}, Vector2{2.0f, 2.0f},Vector2{8.0f, 7.0f}}, Color{255.0f, 250.0f, 2.0f} };
-    //Mesh mesh4{ {Vector2{-2.0f, 7.0f}, Vector2{6.0f, 6.0f},Vector2{-2.0f, 7.0f}}, Color{705.0f, 102.0f, 2.0f} };
-    Model model = std::vector<Mesh>{ mesh,mesh2,mesh3,mesh4 };
-    Model model2 = std::vector<Mesh>{ mesh };
+  
+   
     //Player
 
-    PlayerDesc playerDesc;
-    playerDesc.name = "Player";
-    playerDesc.tag = "Player";
-    playerDesc.speed = 800.0f;
-    playerDesc.damping = 0.3f;
-    playerDesc.model = model;
-    playerDesc.transform = Transform{ Vector2{640.0f,512.0f},0.0f,15.0f };
-
-    Player* player= new Player{playerDesc};
-   
-    //Actor player{Transform{Vector2{640.0f,512.0f}}
-   // Mesh mesh{ {Vector2{-3,3},Vector2{3,3},Vector2{0,0},Color{0.0,0.0,0.0}} };
-   // Actor player{ Transform{Vector2{640.0f,512.0f},0.0f,50.0f} };
-
-
-    scene.AddActor(player);
-    for (int i = 0;i < 20;i++) {
-        EnemyDesc enemyDesc;
-        enemyDesc.name = "Enmemy";
-        enemyDesc.tag = "Enemy";
-        enemyDesc.speed = 800.0f;
-        enemyDesc.damping = 3.0f;
-        enemyDesc.model = model2;
-        enemyDesc.transform = Transform{ Vector2{ru::RandomFloat(1900.0f),ru::RandomFloat(1200.0f)},90.0f,10.0f };
-
-        Enemy* enemy = new Enemy{ enemyDesc };
-        scene.AddActor(enemy);
-
-    };
-
+    
    
 
 
@@ -240,6 +204,7 @@ int main(int argc, char* argv[]) {
         }
         //emgome
         Engine::Get().Update();
+        sgame.Update(Engine::Get().GetTime().GetDeltaTime());
         //if (Engine::Get().GetInput().GetKeyPressed(SDL_SCANCODE_1))
         //{
         //    audio->playSound(sounds[0], nullptr, false, nullptr);
@@ -264,6 +229,16 @@ int main(int argc, char* argv[]) {
 
         audio->update();
 
+        Mesh bulletMesh{
+  {
+    Vector2{ -1, -1 },
+    Vector2{ 1, 0 },
+    Vector2{ -1, 1 },
+    Vector2{ -1, -1 },
+  },
+  Color{ 1.0f, 0.0f, 0.0f }
+        };
+
      
 
 
@@ -280,38 +255,12 @@ int main(int argc, char* argv[]) {
         float seconds = (float)ticks / 1'000'000'000;
         float dt = (float)(ticks - prevticks) / 1'000'000'000;
 
-        //player.SetRotation(player.GetTransform().rotation + (90.0f*dt));
-        //player.SetRotation(90.0f);
-
-        //std::cout << seconds << std::endl;
-       
-        ///
-		//if (input.GetKeyPressed(SDL_SCANCODE_Q)) std::cout << "Q Pressed" << std::endl;
-  //      if (input.GetKeyDown(SDL_SCANCODE_Q)) std::cout << "Q Down" << std::endl;
-  //      if (input.GetKeyReleased(SDL_SCANCODE_Q)) std::cout << "Q Released" << std::endl;
-        //int numkeys;
-        //const bool * keystate = SDL_GetKeyboardState(&numkeys);
-		//if (keystate[SDL_SCANCODE_SPACE]) std::cout << "Space Pressed" << std::endl;
-
 		Vector2 mousePosition;
 		SDL_GetMouseState(&mousePosition.x, &mousePosition.y);
 
       
         Vector2 force = (0.0f,0.f);
-
-        //if (input.GetButtonPressed(Input::MouseButton::Left)) { std::cout << "button pressed\n"; }
-        //if (input.GetButtonReleased(Input::MouseButton::Left)) { std::cout << "button released\n"; }
-
-        //if (input.GetKeyDown(SDL_SCANCODE_A)) force.x -= speed;
-        //if (input.GetKeyDown(SDL_SCANCODE_D)) force.x += speed;
-        //if (input.GetKeyDown(SDL_SCANCODE_W)) force.y -= speed;
-        //if (input.GetKeyDown(SDL_SCANCODE_S)) force.y += speed;
-
-
-        //player.SetVelocity(player.GetVelocity() + force * dt);
-        //player.Update(dt);
-
-        
+   
 
         velocity += (force * dt);
         position += (velocity * dt);
@@ -402,7 +351,7 @@ int main(int argc, char* argv[]) {
         //}
 
         Engine::Get().GetRenderer().Clear();
-
+        Engine::Get().GetPS().Draw(Engine::Get().GetRenderer());
 
 
         Engine::Get().GetRenderer().SetColor(255.0f, 255.0f, .0f);
@@ -411,8 +360,7 @@ int main(int argc, char* argv[]) {
         //enemy.Draw(g_engine.GetRenderer());
 
         scene.Draw(Engine::Get().GetRenderer());
-
-        text->Draw(Engine::Get().GetRenderer(), 40.0f, 40.0f);
+        sgame.Draw(Engine::Get().GetRenderer());
 
 
         Engine::Get().GetRenderer().Present();

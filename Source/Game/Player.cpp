@@ -1,7 +1,9 @@
 #include "Player.h"
 #include "Renderer.h"
 #include "Engine.h"
-
+#include "SpaceGame.h"
+#include "Assets.h"
+#include "Bullet.h"
 //struct PlayerDesc: public nu::ActorDesc
 //{
 //    float speed;
@@ -11,6 +13,15 @@ void Player::Update(float dt)
 {
    // Player(const PlayerDesc& player)
    // nu::Vector2 force = (0.0f, 0.f);
+    nu::Particle particle;
+    particle.position = m_transform.position;
+    particle.color = { 255.0f, 222.0f, 222.0f };
+    particle.lifespan = ru::RandomFloat(4.0f, 4.5f);
+    particle.velocity = { ru::RandomFloat(-200.0f, 200.0f), ru::RandomFloat(-200.0f, 200.0f) };
+
+    nu::Engine::Get().GetPS().AddParticle(particle);
+
+
     float thrust = 0.0f;
     //float speed = 800.0f;
     //if (input.GetButtonPressed(Input::MouseButton::Left)) { std::cout << "button pressed\n"; }
@@ -41,6 +52,20 @@ void Player::Update(float dt)
         AddVelocity(velocity * dt);
 
 
+        if (nu::Engine::Get().GetInput().GetKeyPressed(SDL_SCANCODE_SPACE)) {
+            BulletDesc desc;
+            desc.name = "Bullet";
+            desc.tag = "PlayerBullet";
+            desc.model = assets::bulletModel;
+            desc.transform = m_transform;
+            desc.speed = 1000.0f;
+           
+            //desc.lifespan = 1.0f;
+
+            Bullet* bullet = new Bullet{ desc };
+
+            m_scene->AddActor(bullet);
+        }
 
 
     

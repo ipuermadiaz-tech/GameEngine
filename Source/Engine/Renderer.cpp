@@ -25,7 +25,7 @@ bool nu::Renderer::Initialize(const char* name, int width, int height) {
         return 1;
     }
 
-    m_renderer = SDL_CreateRenderer(m_window, NULL);
+     m_renderer = SDL_CreateRenderer(m_window, NULL);
     if (m_renderer == nullptr) {
         std::cerr << "SDL_CreateRenderer Error: " << SDL_GetError() << std::endl;
         SDL_DestroyWindow(m_window);
@@ -91,7 +91,8 @@ void nu::Renderer::DrawModel(const Model& model, const Transform& transform) con
 {
    
     for (const auto& mesh : model.GetMeshes()) {
-        SetColor(mesh.GetColor().x, mesh.GetColor().y, mesh.GetColor().z, 1.0f);
+        //SetColor(mesh.GetColor().x, mesh.GetColor().y, mesh.GetColor().z, 1.0f);
+        SetColor(255, 255, 255);
 
         //SetColor(244.0f, 244.0f, 244.0f);
         auto& points = mesh.GetPoints();

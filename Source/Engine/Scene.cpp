@@ -9,8 +9,27 @@ namespace nu
 		{
 			actor->Update(dt);
 		}
+
+		// add pending actors
+		m_actors.insert(m_actors.end(), m_pendingActors.begin(), m_pendingActors.end());
+		m_pendingActors.clear();
 		UpdateCollisions();
 
+
+		auto iter = m_actors.begin();
+		while (iter != m_actors.end())
+		{
+			if ((*iter)->GetDestroyed())
+			{
+				delete* iter;               // Free memory
+				iter = m_actors.erase(iter); // Remove pointer from vector
+			}
+			else
+			{
+				(*iter)->Update(dt);
+				++iter;
+			}
+		}
 	}
 
 	void Scene::Draw(const Renderer& renderer)
@@ -19,6 +38,15 @@ namespace nu
 		{
 			actor->Draw(renderer);
 		}
+
+	}
+	void Scene::RemoveAllActors()
+	{
+		for (auto actor : m_actors)
+		{
+			delete actor;
+		}
+		m_actors.clear();
 
 	}
 	void Scene::UpdateCollisions()
@@ -42,7 +70,7 @@ namespace nu
 	}
 	void Scene::AddActor(Actor* actor) {
 		actor->m_scene=this;
-		m_actors.push_back(actor); 
+		m_pendingActors.push_back(actor);
 	}
 
 

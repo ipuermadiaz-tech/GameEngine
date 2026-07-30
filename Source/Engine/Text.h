@@ -12,8 +12,8 @@ namespace nu {
 		Text(Font* font) : m_font{ font } {}
 		~Text();
 
-		bool Create(Renderer& renderer, const std::string& text, const Color& color);
-		void Draw(Renderer& renderer, float x, float y);
+		bool Create(const Renderer& renderer, const std::string& text, const Color& color);
+		void Draw(const Renderer& renderer, float x, float y);
 
 	private:
 		Font* m_font{ nullptr };
