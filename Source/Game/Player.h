@@ -30,9 +30,15 @@ public:
     void Update(float dt) override;
     void Draw(const class nu::Renderer& renderer) const override;
     void OnCollision(Actor* other) override;
+    int GetFuel() { return fuel; };
 
 private:
-
-	int m_ammo = 0;
+    int counter = 0;
+    int counterTarget = 120;
+    bool canShoot = true;
+    int max_ammo = 40;
+	int m_ammo = max_ammo;
+    //int max_fuel = 2000;
+    int fuel = 2000;
     float m_speed = 800.0f;
 };

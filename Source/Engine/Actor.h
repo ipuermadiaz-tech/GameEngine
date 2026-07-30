@@ -24,24 +24,32 @@ namespace nu
 
     {
 
-public:
-    Actor(const ActorDesc& actorDesc) :
-        m_name{ actorDesc.name },
-        m_tag{ actorDesc.tag },
-        m_transform{ actorDesc.transform },
-        m_velocity{ actorDesc.velocity },
-        m_damping{ actorDesc.damping },
-        m_model{ actorDesc.model }
-    {
-    }
+    public:
+        Actor(const ActorDesc& actorDesc) :
+            m_name{ actorDesc.name },
+            m_tag{ actorDesc.tag },
+            m_transform{ actorDesc.transform },
+            m_velocity{ actorDesc.velocity },
+            m_damping{ actorDesc.damping },
+            m_model{ actorDesc.model },
+            m_destroyed{ false } // Explicitly set
+        {
+        }
 
+        Actor() : m_destroyed{ false } {}
 
-     Actor() = default;
-    Actor(const Transform& transform) : m_transform{ transform } {}
-    Actor(const Transform& transform, const Model& model):
-        m_transform{transform},
-        m_model{model}
-    { }
+        Actor(const Transform& transform) :
+            m_transform{ transform },
+            m_destroyed{ false }
+        {
+        }
+
+        Actor(const Transform& transform, const Model& model) :
+            m_transform{ transform },
+            m_model{ model },
+            m_destroyed{ false }
+        {
+        }
 
 
     //Actor() = default;
@@ -81,6 +89,7 @@ protected:
     Model m_model;
     Scene* m_scene{ nullptr };
     bool m_destroyed = false;
+    int nowrap = 0;
 
 };
 

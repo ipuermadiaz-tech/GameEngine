@@ -8,5 +8,14 @@ void Bullet::Update(float dt)
 
 	SetVelocity(velocity);
 
+	if (m_transform.position.x > 1923 || m_transform.position.x < 0) {
+	SetDestroyed();
+	}
+	if (m_transform.position.y > 1024 || m_transform.position.y<0) {
+	 SetDestroyed();
+	}
+
 	Actor::Update(dt);
+
+
 }

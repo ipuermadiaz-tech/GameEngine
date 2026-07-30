@@ -30,4 +30,5 @@ public:
 
 private:
 	float m_speed = 800.0f;
+	int nowrap = 1;
 };

@@ -99,36 +99,6 @@ int main(int argc, char* argv[]) {
     
 
     
-
-
-
-    FMOD::System* audio;
-    FMOD::System_Create(&audio);
-
-    void* extradriverdata = nullptr;
-    audio->init(32, FMOD_INIT_NORMAL, extradriverdata);
-    std::vector<FMOD::Sound*> sounds;
-
-    FMOD::Sound* sound = nullptr;
-    audio->createSound("clap.wav", FMOD_DEFAULT, 0, &sound);
-    sounds.push_back(sound);
-   
-
-     sound = nullptr;
-    audio->createSound("cowbell.wav", FMOD_DEFAULT, 0, &sound);
-    sounds.push_back(sound);
-
-    sound = nullptr;
-    audio->createSound("snare.wav", FMOD_DEFAULT, 0, &sound);
-    sounds.push_back(sound);
-
-    sound = nullptr;
-    audio->createSound("bass.wav", FMOD_DEFAULT, 0, &sound);
-    sounds.push_back(sound);
-    sound = nullptr;
-    audio->createSound("close-hat.wav", FMOD_DEFAULT, 0, &sound);
-    sounds.push_back(sound);
-
     
 
 
@@ -227,7 +197,6 @@ int main(int argc, char* argv[]) {
         //    audio->playSound(sounds[4], nullptr, false, nullptr);
         //}
 
-        audio->update();
 
         Mesh bulletMesh{
   {

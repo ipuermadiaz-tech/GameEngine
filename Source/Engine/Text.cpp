@@ -12,28 +12,32 @@ namespace nu {
 		}
 	}
 
-	bool Text::Create(const Renderer& renderer, const std::string& text, const Color& color) {
-		// create a surface using the font, text string and color
-		SDL_Color c{ (uint8_t)(color.x * 255), (uint8_t)(color.y * 255), (uint8_t)(color.z * 255), 255 };
-		SDL_Surface* surface = TTF_RenderText_Solid(m_font->m_ttfFont, text.c_str(), text.size(), c);
-		if (surface == nullptr) {
-			std::cerr << "Could not create surface.\n";
-			return false;
-		}
+    bool Text::Create(const Renderer& renderer, const std::string& text, const Color& color) {
+        // 1. FREE PREVIOUS TEXTURE TO PREVENT MEMORY LEAKS
+        if (m_texture != nullptr) {
+            SDL_DestroyTexture(m_texture);
+            m_texture = nullptr;
+        }
 
-		// create a texture from the surface, only textures can render to the renderer
-		m_texture = SDL_CreateTextureFromSurface(renderer.m_renderer, surface);
-		if (m_texture == nullptr) {
-			SDL_DestroySurface(surface);
-			std::cerr << "Could not create texture" << SDL_GetError() << std::endl;
-			return false;
-		}
+        SDL_Color c{ (uint8_t)(color.x * 255), (uint8_t)(color.y * 255), (uint8_t)(color.z * 255), 255 };
 
-		// free the surface, no longer needed after creating the texture
-		SDL_DestroySurface(surface);
+        // 2. SDL3 TTF_RenderText_Solid (pass 0 for length to read full null-terminated string)
+        SDL_Surface* surface = TTF_RenderText_Solid(m_font->m_ttfFont, text.c_str(), 0, c);
+        if (surface == nullptr) {
+            std::cerr << "Could not create surface.\n";
+            return false;
+        }
 
-		return true;
-	}
+        m_texture = SDL_CreateTextureFromSurface(renderer.m_renderer, surface);
+        if (m_texture == nullptr) {
+            SDL_DestroySurface(surface);
+            std::cerr << "Could not create texture: " << SDL_GetError() << std::endl;
+            return false;
+        }
+
+        SDL_DestroySurface(surface);
+        return true;
+    }
 
 	void Text::Draw(const Renderer& renderer, float x, float y) {
 		// get the texture width and height

@@ -11,15 +11,16 @@ bool SpaceGame::Initialize()
     m_scene->SetGame(this);
     Engine::Get().GetAudio().AddSound("bass", "bass.wav");
     m_titleFont= new Font();
-    m_titleFont->Load("fonts/Handmade_Calligraphy.ttf", 64);
+    m_titleFont->Load("fonts/Handmade_Calligraphy.ttf", 128);
     m_titleText= new Text(m_titleFont);
-    m_titleText->Create(Engine::Get().GetRenderer(), "Hello World", Color{ 1.0f, 1.0f, 1.0f });
+    m_titleText->Create(Engine::Get().GetRenderer(), "Super Cool Space Game", Color{ 1.0f, 1.0f, 1.0f });
 
     m_gameFont = new Font();
-    m_gameFont->Load("fonts/Handmade_Calligraphy.ttf", 32);
+    m_gameFont->Load("fonts/Handmade_Calligraphy.ttf", 64);
 
     m_gameText = new Text(m_gameFont);
     m_liveText = new Text(m_gameFont);
+    m_fuelText = new Text(m_gameFont);
     
 
     return true;
@@ -27,6 +28,7 @@ bool SpaceGame::Initialize()
 
 void SpaceGame::Update(float dt)
 {
+    dt = std::min(dt, 0.05f);
     switch (m_gameState) {
     case GameState::Title:
         if (Engine::Get().GetInput().GetKeyPressed(SDL_SCANCODE_SPACE))
@@ -35,6 +37,7 @@ void SpaceGame::Update(float dt)
         }
         break;
     case GameState::StartGame:
+        
         m_score = 0;
         m_lives = 3;
         SpawnPlayer();
@@ -52,15 +55,22 @@ void SpaceGame::Update(float dt)
         m_spawnTimer -= dt;
         if (m_spawnTimer <= 0.0f)
         {
-            m_spawnTimer = 5.0;
+            m_spawnTimer = max_Timer;
 
             SpawnEnemy();
-
+            wave_counter--;
+            if (wave_counter == 0) {
+                SpawnWave();
+                wave_counter = 14;
+            
+            }
         }
       
         break;
     case GameState::GameOver:
         m_gameState = GameState::Title;
+        m_score = 0;
+        wave_counter = 10;
         m_scene->RemoveAllActors();
         break;
     
@@ -80,14 +90,25 @@ void SpaceGame::Draw(const nu::Renderer& renderer)
     case GameState::StartLevel:
         break;
     case GameState::Game:
-        m_gameText->Create(renderer, "Score:"+std::to_string(m_score), Color{1.0f, 1.0f, 1.0f});
-        m_gameText->Draw(renderer, 30, 30);
+        // Update textures ONLY when the values actually change
+        if (m_score != m_previousScore) {
+            m_gameText->Create(renderer, "Score : " + std::to_string(m_score), Color{ 1.0f, 1.0f, 1.0f });
+            m_previousScore = m_score;
+        }
 
-        m_liveText->Create(renderer, "Lives:" + std::to_string(m_lives), Color{ 1.0f, 1.0f, 1.0f });
-        m_liveText->Draw(renderer, 1000, 30);
+        if (m_lives != m_previousLives) {
+            m_liveText->Create(renderer, "Lives : " + std::to_string(m_lives), Color{ 1.0f, 1.0f, 1.0f });
+            m_previousLives = m_lives;
+        }
+
+        m_fuelText->Create(renderer, "Fuel : " + std::to_string(m_fuel), Color{ 1.0f, 1.0f, 1.0f });
+        // Drawing existing textures is lightning fast!
+        m_gameText->Draw(renderer, 30, 30);
+        m_liveText->Draw(renderer, 800, 30);
+        m_fuelText->Draw(renderer, 1600, 30);
         break;
     case GameState::GameOver:
-        
+        max_Timer = 5.0f;
         break;
 
     }
@@ -98,6 +119,7 @@ void SpaceGame::Draw(const nu::Renderer& renderer)
 void SpaceGame::OnPlayerDead()
 {
     m_lives--;
+    wave_counter = 10;
     if (m_lives == 0) m_gameState = GameState::GameOver;
     else m_gameState = GameState::StartLevel;
 }
@@ -113,7 +135,7 @@ void SpaceGame::SpawnPlayer()
     PlayerDesc playerDesc;
     playerDesc.name = "Player";
     playerDesc.tag = "Player";
-    playerDesc.speed = 800.0f;
+    playerDesc.speed = 1200.0f;
     playerDesc.damping = 2.3f;
     playerDesc.model = model;
     playerDesc.transform = Transform{ Vector2{640.0f,512.0f},0.0f,15.0f };
@@ -121,6 +143,7 @@ void SpaceGame::SpawnPlayer()
     Player* player = new Player{ playerDesc };
 
     m_scene->AddActor(player);
+    m_fuel = 2000;
 }
 
 void SpaceGame::SpawnEnemy()
@@ -137,4 +160,32 @@ void SpaceGame::SpawnEnemy()
 
     Enemy* enemy = new Enemy{ enemyDesc };
     m_scene->AddActor(enemy);
+    if (max_Timer > 2) {
+        max_Timer -= 0.2;
+    }
+    if (max_Timer > 1) {
+        max_Timer -= 0.1;
+    }
+  
+}
+void SpaceGame::SpawnWave()
+{
+    float thePosition=0.0f;
+    
+    Mesh mesh{ {Vector2{-3.0f, 3.0f}, Vector2{3.0f, 3.0f}, Vector2{2.0f, 2.0f},Vector2{-6.0f, 6.0f}}, Color{255.0f, 255.0f, 255.0f} };
+    Model model2 = std::vector<Mesh>{ mesh };
+    EnemyDesc enemyDesc;
+    enemyDesc.name = "Enemy2";
+    enemyDesc.tag = "Enemy";
+    enemyDesc.speed = 300.0f;
+    enemyDesc.damping = 3.0f;
+    enemyDesc.model = model2;
+    for (int i = 0;i < 60;i++) {
+        thePosition += 30;
+        enemyDesc.transform = Transform{ Vector2{thePosition,0},90.0f,10.0f };
+
+        Enemy* enemy = new Enemy{ enemyDesc };
+        m_scene->AddActor(enemy);
+    }
+
 }

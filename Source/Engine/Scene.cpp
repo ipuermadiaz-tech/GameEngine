@@ -4,29 +4,28 @@ namespace nu
 {
 	void Scene::Update(float dt)
 	{
-		
-		for (auto actor : m_actors)
-		{
+		// 1. Flush pending actors into the scene first so they start participating
+		if (!m_pendingActors.empty()) {
+			m_actors.insert(m_actors.end(), m_pendingActors.begin(), m_pendingActors.end());
+			m_pendingActors.clear();
+		}
+
+		// 2. Update all actors exactly ONCE
+		for (auto actor : m_actors) {
 			actor->Update(dt);
 		}
 
-		// add pending actors
-		m_actors.insert(m_actors.end(), m_pendingActors.begin(), m_pendingActors.end());
-		m_pendingActors.clear();
+		// 3. Resolve collisions
 		UpdateCollisions();
 
-
+		// 4. Clean up destroyed actors
 		auto iter = m_actors.begin();
-		while (iter != m_actors.end())
-		{
-			if ((*iter)->GetDestroyed())
-			{
-				delete* iter;               // Free memory
-				iter = m_actors.erase(iter); // Remove pointer from vector
+		while (iter != m_actors.end()) {
+			if ((*iter)->GetDestroyed()) {
+				delete* iter; // Fixed syntax
+				iter = m_actors.erase(iter);
 			}
-			else
-			{
-				(*iter)->Update(dt);
+			else {
 				++iter;
 			}
 		}

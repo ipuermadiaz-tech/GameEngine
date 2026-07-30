@@ -11,7 +11,7 @@ void Player::Update(float dt)
     nu::Particle particle;
     particle.position = m_transform.position;
     particle.color = { 255.0f, 222.0f, 222.0f };
-    particle.lifespan = ru::RandomFloat(4.0f, 4.5f);
+    particle.lifespan = ru::RandomFloat(1.0f, 1.1f);
     particle.velocity = { ru::RandomFloat(-200.0f, 200.0f), ru::RandomFloat(-200.0f, 200.0f) };
 
     nu::Engine::Get().GetPS().AddParticle(particle);
@@ -38,23 +38,46 @@ void Player::Update(float dt)
     nu::Vector2 velocity=forward.Rotate(m_transform.rotation*nu::DegToRad)*thrust;
     
         AddVelocity(velocity * dt);
+        if (nu::Engine::Get().GetInput().GetKeyDown(SDL_SCANCODE_Q)&& nu::Engine::Get().GetInput().GetKeyDown(SDL_SCANCODE_W) &&fuel>0) {
+            AddVelocity(velocity * dt);
+            fuel--;
+            ((SpaceGame*)m_scene->GetGame())->SetFuel(fuel);
 
-
-        if (nu::Engine::Get().GetInput().GetKeyPressed(SDL_SCANCODE_SPACE)) {
-            BulletDesc desc;
-            desc.name = "Bullet";
-            desc.tag = "PlayerBullet";
-            desc.model = assets::bulletModel;
-            desc.transform = m_transform;
-            desc.speed = 1000.0f;
-           
-            //desc.lifespan = 1.0f;
-
-            Bullet* bullet = new Bullet{ desc };
-
-            m_scene->AddActor(bullet);
+        }
+        // 1. Only increment reload counter IF we are out of ammo / reloading!
+        if (!canShoot) {
+            counter++;
+            if (counter >= counterTarget) {
+                m_ammo = max_ammo;
+                canShoot = true;
+                counter = 0; // Reset counter for the next reload cycle
+            }
         }
 
+        // 2. Shooting logic
+        if (canShoot) {
+            if (nu::Engine::Get().GetInput().GetKeyDown(SDL_SCANCODE_SPACE)) {
+                BulletDesc desc;
+                desc.name = "Bullet";
+                desc.tag = "PlayerBullet";
+                desc.model = assets::bulletModel;
+                desc.transform = m_transform;
+                desc.speed = 1000.0f;
+
+                Bullet* bullet = new Bullet{ desc };
+                m_scene->AddActor(bullet);
+
+                m_ammo--;
+
+                // Use <= 0 to safely catch accidental underflows
+                if (m_ammo <= 0) {
+                    m_ammo = 0;
+                    canShoot = false;
+                    counter = 0; // Start reload timer
+                    nu::Engine::Get().GetAudio().PlaySound("bass");
+                }
+            }
+        }
 
     
     Actor::Update(dt);
@@ -68,7 +91,7 @@ void Player::OnCollision(Actor* other)
         other->SetDestroyed();
 
 
-
+        ((SpaceGame*)m_scene->GetGame())->OnPlayerDead();
         // create particle explosion
         for (int i = 0; i < 100; i++)
         {
