@@ -100,8 +100,10 @@ void SpaceGame::Draw(const nu::Renderer& renderer)
             m_liveText->Create(renderer, "Lives : " + std::to_string(m_lives), Color{ 1.0f, 1.0f, 1.0f });
             m_previousLives = m_lives;
         }
-
-        m_fuelText->Create(renderer, "Fuel : " + std::to_string(m_fuel), Color{ 1.0f, 1.0f, 1.0f });
+        if (m_fuel != m_previousFuel) {
+            m_fuelText->Create(renderer, "Fuel : " + std::to_string(m_fuel), Color{ 1.0f, 1.0f, 1.0f });
+            m_previousFuel = m_fuel;
+        }
         // Drawing existing textures is lightning fast!
         m_gameText->Draw(renderer, 30, 30);
         m_liveText->Draw(renderer, 800, 30);
@@ -160,10 +162,10 @@ void SpaceGame::SpawnEnemy()
 
     Enemy* enemy = new Enemy{ enemyDesc };
     m_scene->AddActor(enemy);
-    if (max_Timer > 2) {
+    if (max_Timer > 2.5) {
         max_Timer -= 0.2;
     }
-    if (max_Timer > 1) {
+    if (max_Timer > 2.0) {
         max_Timer -= 0.1;
     }
   

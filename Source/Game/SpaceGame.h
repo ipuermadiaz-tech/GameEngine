@@ -46,6 +46,7 @@ private:
 	int wave_counter = 5;
 	int m_previousScore = -1;
 	int m_previousLives = -1;
+	int m_previousFuel = -1;
 	GameState m_gameState = GameState::Title;
 
 	 nu::Font* m_titleFont{ nullptr };
