@@ -4,11 +4,6 @@
 #include "SpaceGame.h"
 #include "Assets.h"
 #include "Bullet.h"
-//struct PlayerDesc: public nu::ActorDesc
-//{
-//    float speed;
-//};
-
 void Player::Update(float dt)
 {
    // Player(const PlayerDesc& player)
@@ -23,13 +18,6 @@ void Player::Update(float dt)
 
 
     float thrust = 0.0f;
-    //float speed = 800.0f;
-    //if (input.GetButtonPressed(Input::MouseButton::Left)) { std::cout << "button pressed\n"; }
-    //if (input.GetButtonReleased(Input::MouseButton::Left)) { std::cout << "button released\n"; }
-
-    //if (nu::g_engine.GetInput().GetKeyDown(SDL_SCANCODE_A)) force.x -= m_speed;
-    //if (nu::g_engine.GetInput().GetKeyDown(SDL_SCANCODE_D)) force.x += m_speed;
-    //m_speed = 800.0f;
     
         if (nu::Engine::Get().GetInput().GetKeyDown(SDL_SCANCODE_W)) thrust -= m_speed;
     
@@ -70,6 +58,31 @@ void Player::Update(float dt)
 
     
     Actor::Update(dt);
+}
+
+void Player::OnCollision(Actor* other)
+{
+    if (other->GetTag() == "Enemy")
+    {
+        SetDestroyed();
+        other->SetDestroyed();
+
+
+
+        // create particle explosion
+        for (int i = 0; i < 100; i++)
+        {
+            nu::Particle particle;
+            particle.position = m_transform.position;
+            particle.color = { 255.0f, 0.0f, 0.0f };
+            particle.lifespan = ru::RandomFloat(0.5f, 2.0f);
+            particle.velocity = { ru::RandomFloat(-600.0f, 600.0f), ru::RandomFloat(-600.0f, 600.0f) };
+
+            nu::Engine::Get().GetPS().AddParticle(particle);
+        }
+
+
+    }
 }
 
 void Player::Draw(const nu::Renderer& renderer) const

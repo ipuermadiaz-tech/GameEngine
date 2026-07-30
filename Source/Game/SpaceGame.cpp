@@ -106,11 +106,10 @@ void SpaceGame::SpawnPlayer()
 {
 
     Mesh mesh{ {Vector2{-3.0f, 3.0f}, Vector2{3.0f, 3.0f}, Vector2{0.0f, 0.0f},Vector2{-3.0f, 3.0f}}, Color{255.0f, 255.0f, 255.0f} };
-    Mesh mesh2{ {Vector2{-3.0f, 7.0f}, Vector2{3.0f, 3.0f}, Vector2{0.0f, 0.0f},Vector2{-3.0f, 7.0f}}, Color{255.0f, 10.0f, 255.0f} };
     Mesh mesh3{ {Vector2{2.0f, 7.0f}, Vector2{6.0f, 6.0f}, Vector2{0.0f, 0.0f},Vector2{2.0f, 7.0f}}, Color{255.0f, 10.0f, 2.0f} };
     Mesh mesh4{ {Vector2{8.0f, 7.0f}, Vector2{6.0f, 6.0f}, Vector2{2.0f, 2.0f},Vector2{8.0f, 7.0f}}, Color{255.0f, 250.0f, 2.0f} };
     //Mesh mesh4{ {Vector2{-2.0f, 7.0f}, Vector2{6.0f, 6.0f},Vector2{-2.0f, 7.0f}}, Color{705.0f, 102.0f, 2.0f} };
-    Model model = std::vector<Mesh>{ mesh,mesh2,mesh3,mesh4 };
+    Model model = std::vector<Mesh>{ mesh,mesh3,mesh4 };
     PlayerDesc playerDesc;
     playerDesc.name = "Player";
     playerDesc.tag = "Player";
@@ -131,10 +130,10 @@ void SpaceGame::SpawnEnemy()
     EnemyDesc enemyDesc;
     enemyDesc.name = "Enemy";
     enemyDesc.tag = "Enemy";
-    enemyDesc.speed = 800.0f;
+    enemyDesc.speed = 500.0f;
     enemyDesc.damping = 3.0f;
     enemyDesc.model = model2;
-    enemyDesc.transform = Transform{ Vector2{ru::RandomFloat(1900.0f),ru::RandomFloat(1200.0f)},90.0f,10.0f };
+    enemyDesc.transform = Transform{ Vector2{ru::RandomFloat(1000.0f,1900.0f),ru::RandomFloat(800.0f,1200.0f)},90.0f,10.0f };
 
     Enemy* enemy = new Enemy{ enemyDesc };
     m_scene->AddActor(enemy);
